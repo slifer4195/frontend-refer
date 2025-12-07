@@ -18,7 +18,7 @@ function Navbar() {
       });
       if (res.ok) {
         setLoggedIn(false);
-        setCurrentUser(null);
+        // setCurrentUser(null);
         navigate('/login');
       }
     } catch (err) {
@@ -41,12 +41,12 @@ function Navbar() {
 
         <nav>
           <ul className={`navbar-links ${menuOpen ? 'show' : ''}`}>
-            {/* Test link only for admin */}
+            {/* Test link only for admin
             {loggedIn && currentUser?.email === 'slifer4195@gmail.com' && (
               <li>
                 <NavLink to="/test" onClick={() => setMenuOpen(false)}>Test</NavLink>
               </li>
-            )}
+            )} */}
 
             {/* Not logged in */}
             {!loggedIn && (
