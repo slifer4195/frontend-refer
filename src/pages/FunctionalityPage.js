@@ -5,7 +5,7 @@ import '../style/functionality.css';
 export default function ProfilePage() {
   const [user, setUser] = useState(null);
   const [customers, setCustomers] = useState([]);
-  const [customerCount, setCustomerCount] = useState(null);
+  // const [customerCount, setCustomerCount] = useState(null);
   const [items, setItems] = useState([]); // menu items state
   const [error, setError] = useState(null);
   const [selectedCustomer, setSelectedCustomer] = useState(null);
@@ -15,7 +15,7 @@ export default function ProfilePage() {
   useEffect(() => {
     fetchUser();
     fetchCustomers();
-    fetchCustomerCount();
+    // fetchCustomerCount();
     fetchMenu(); // fetch menu on mount
   }, []);
 
@@ -61,18 +61,18 @@ export default function ProfilePage() {
     }
   };
 
-  const fetchCustomerCount = async () => {
-    try {
-      const res = await fetch('https://api.bluepoint.click/customer-count', {
-        credentials: 'include',
-      });
-      if (!res.ok) throw new Error('Failed to fetch count');
-      const data = await res.json();
-      setCustomerCount(data.customer_count);
-    } catch (err) {
-      setError('Unable to fetch customer count');
-    }
-  };
+  // const fetchCustomerCount = async () => {
+  //   try {
+  //     const res = await fetch('https://api.bluepoint.click/customer-count', {
+  //       credentials: 'include',
+  //     });
+  //     if (!res.ok) throw new Error('Failed to fetch count');
+  //     const data = await res.json();
+  //     setCustomerCount(data.customer_count);
+  //   } catch (err) {
+  //     setError('Unable to fetch customer count');
+  //   }
+  // };
 
 
   const handleAddCustomer = async () => {
@@ -90,7 +90,7 @@ export default function ProfilePage() {
       if (res.ok) {
         setNewCustomerEmail('');
         fetchCustomers();
-        fetchCustomerCount();
+        // fetchCustomerCount();
       } else {
         alert(data.error);
       }
