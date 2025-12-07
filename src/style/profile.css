@@ -1,0 +1,219 @@
+.profile-page {
+  font-family: 'Poppins', sans-serif;
+  background: linear-gradient(135deg, #4facfe, #a044ff);
+  min-height: 100vh;
+  margin: 0;
+  padding: 2rem;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+.profile-container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 1200px;
+  gap: 1rem;
+  margin-top: 7rem; /* added top margin */
+}
+
+.top-profile {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap; /* responsive stacking on small screens */
+}
+
+.company-info,
+.programs-section {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+  padding: 1.5rem;
+  flex: 1;
+  min-width: 300px;
+}
+
+.company-info h2 {
+  font-size: 1.3rem;
+  color: rgb(117, 30, 199);
+  margin-bottom: 2rem;
+}
+
+.company-info p {
+  font-size: 1rem;
+  color: rgb(117, 30, 199);
+  margin: 0.3rem 0;
+}
+
+.programs-section h2 {
+  font-size: 1.2rem;
+  text-align: center;
+  color: #222;
+  margin-bottom: 0.8rem;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 0.5rem;
+}
+
+.programs-section ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.programs-section li {
+  font-size: 0.9rem;
+  color: #444;
+  margin-bottom: 0.5rem;
+  line-height: 1.4;
+  padding: 0.3rem 0;
+  border-bottom: 1px dashed #eee;
+  transition: all 0.2s ease;
+}
+
+.programs-section li:last-child {
+  border-bottom: none;
+}
+
+.programs-section li:hover {
+  background: #f0f6ff;
+  transform: translateY(-1px);
+}
+
+.programs-section strong {
+  color: #4facfe;
+}
+
+.customer-list {
+  margin-top: 2rem;
+  text-align: left;
+  max-height: 300px; /* fixed height */
+  overflow-y: auto;  /* enable vertical scrolling */
+  border-top: 1px solid #eee;
+  border-bottom: 1px solid #eee;
+  padding: 0.5rem; /* optional padding */
+  background: #f9f9fb; /* optional background for contrast */
+  border-radius: 8px;   /* optional rounded corners */
+}
+
+.customer-list ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  
+}
+
+.customer-list li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 1.5rem; /* more horizontal padding */
+  border-bottom: 1px solid #eee;
+  font-size: 1rem;
+  color: #444;
+}
+
+.customer-list li:last-child {
+  border-bottom: none;
+}
+
+.customer-list button {
+  background: #b164ff;
+  color: white;
+  border: none;
+  border-radius: 25px;
+  padding: 6px 14px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 0.9rem;
+  transition: background-color 0.3s ease;
+}
+
+.customer-list button:hover {
+  background: #4facfe;
+}
+
+.customer-title{
+  margin: 2rem;
+}
+
+.error-message {
+  color: #ff4d4f;
+  font-weight: 600;
+  margin-bottom: 1rem;
+}
+.company-info {
+  font-family: 'Poppins', sans-serif;
+  color: #2c3e50; /* professional dark gray/blue */
+}
+
+.company-info .company-name {
+  font-size: 1.5rem;  /* larger emphasis */
+  font-weight: 600;
+  color: #1a237e;     /* deep professional blue */
+  margin-bottom: 0.3rem;
+}
+
+.company-info .email {
+  font-size: 1rem;
+  color: #555; /* softer gray */
+  margin-bottom: 0.2rem;
+}
+
+.company-info .customers {
+  font-size: 1rem;
+  color: #333;
+}
+
+.dashboard-container {
+  color: black; /* default for everything */
+  font-family: 'Poppins', sans-serif;
+}
+
+.welcome-text {
+  color: #0f1d29; /* standout color (blue gradient base) */
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 1rem;
+}
+
+.dashboard-section {
+  margin-bottom: 1.2rem;
+}
+
+.dashboard {
+  color: black !important;
+  margin: 0.3rem 0 0 0.5rem;
+}
+
+
+@media (max-width: 900px) {
+  .top-profile {
+    flex-direction: column;
+  }
+}
+
+@media (max-width: 480px) {
+  .profile-page {
+    padding: 2rem;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .profile-container {
+    margin-top: 3rem;
+    align-items: center; /* center children */
+  }
+
+  .top-profile {
+    flex-direction: column;
+    align-items: center; /* center each card */
+
+  }
+  .customer-list {
+    width: 100%;
+    max-width: 100%; /* match company-info and programs-section */
+
+  }
+
+}

@@ -1,0 +1,124 @@
+/* Navbar base */
+.navbar {
+    background-color: #333;
+    color: white;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 100;
+    height: 60px; /* fixed navbar height */
+  }
+  
+  .navbar-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 1.5rem;
+    max-width: 1200px;
+    margin: auto;
+    height: 100%;
+  }
+  
+  .navbar-logo {
+    font-size: 1.5rem;
+    font-weight: bold;
+  }
+  
+  .title {
+    text-decoration: none;
+    color: rgb(37, 200, 225);
+  }
+  .title:hover {
+    color: #b673d5;
+  }
+  /* Links */
+  .navbar-links {
+    list-style: none;
+    display: flex;
+    gap: 1.2rem;
+    margin: 0;
+    padding: 0;
+    position: relative;
+  }
+  
+  .navbar-links li a {
+    text-decoration: none;
+    color: white;
+    font-weight: 500;
+    transition: color 0.3s;
+  }
+  
+  .navbar-links li a:hover,
+  .navbar-links li a.active {
+    color: #ff9800;
+  }
+  /* Hamburger container */
+.navbar-toggle {
+    position: absolute;
+    right: 1.5rem;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 30px;
+    height: 24px;
+    cursor: pointer;
+    display: none;
+    flex-direction: column;
+    justify-content: space-between;
+    user-select: none;
+    z-index: 110;
+  }
+  
+  /* Show hamburger on mobile */
+ @media (max-width: 768px) {
+  .navbar-links {
+    display: none;        /* hide links by default on mobile */
+    position: absolute;
+    top: 60px;            /* below navbar */
+    right: 0;
+    background-color: #333;
+    flex-direction: column;
+    width: 200px;
+    padding: 1rem;
+  }
+
+  .navbar-links.show {
+    display: flex;        /* show links when toggled */
+  }
+
+  .navbar-toggle {
+    display: flex;
+  }
+}
+
+  /* Hamburger bars */
+  .navbar-toggle span {
+    display: block;
+    height: 4px;
+    width: 100%;
+    background-color: white;
+    border-radius: 2px;
+    transition: all 0.4s ease;
+    transform-origin: center;
+  }
+  
+  /* Animate toggle open state */
+  .navbar-toggle.open span:nth-child(1) {
+    transform: rotate(45deg) translate(5px, 5px);
+  }
+  
+  .navbar-toggle.open span:nth-child(2) {
+    opacity: 0;
+  }
+  
+  .navbar-toggle.open span:nth-child(3) {
+    transform: rotate(-45deg) translate(5px, -5px);
+  }
+  
+  .logout-button{
+    font-weight: 500;
+  }
+
+  .logout-button:hover{
+    color: #ff9800;
+    
+  }

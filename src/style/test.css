@@ -1,0 +1,179 @@
+.test-page {
+    font-family: 'Poppins', sans-serif;
+    background: linear-gradient(135deg, #4facfe, #a044ff);
+    min-height: 100vh;
+    padding: 5rem;
+    box-sizing: border-box;
+    color: #222;
+  }
+  
+  .test-page h1 {
+    text-align: center;
+    font-size: 2rem;
+    color: white;
+    margin-bottom: 2rem;
+  }
+  
+  .test-page h2 {
+    font-size: 1.4rem;
+    color: #111;
+    margin-bottom: 0.5rem;
+    border-bottom: 2px solid #eee;
+    padding-bottom: 0.3rem;
+  }
+  
+  .test-page .section {
+    background: white;
+    padding: 1.5rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    margin-bottom: 2rem;
+  }
+  
+  .test-page button {
+    background: linear-gradient(90deg, #4facfe, #a044ff);
+    color: white;
+    border: none;
+    padding: 0.6rem 1.2rem;
+    font-size: 1rem;
+    font-weight: 600;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: opacity 0.2s ease;
+    min-width: 120px;
+  }
+  
+  .test-page button:hover {
+    opacity: 0.9;
+  }
+  
+  .test-page pre {
+    background: #f5f5f5;
+    padding: 0.8rem;
+    border-radius: 6px;
+    overflow-x: auto;
+  }
+  
+  .test-page ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .test-page li {
+    background: #f5f5f5;
+    padding: 0.6rem 1rem;
+    margin-bottom: 0.5rem;
+    border-radius: 6px;
+  }
+  
+  .test-page p {
+    color: #555;
+  }
+
+  .user-card {
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 1rem;
+    margin-bottom: 1.5rem;
+    background-color: #f9f9f9;
+  }
+  
+  .user-header h2 {
+    margin-bottom: 0.5rem;
+  }
+  
+  .customers-list table {
+    width: 100%; /* full width */
+    border-collapse: collapse;
+    margin-top: 0.5rem;
+  }
+  
+  .customers-list th,
+  .customers-list td {
+    border: 1px solid #ddd;
+    padding: 0.75rem;
+    text-align: left;
+  }
+  
+  .customers-list th {
+    background-color: #4facfe; /* header background */
+    color: white;
+    font-weight: bold;
+  }
+  
+  .customers-list tr:nth-child(even) {
+    background-color: #f2f2f2; /* striped rows */
+  }
+  
+  .customers-list tr:hover {
+    background-color: #e0f0ff; /* hover effect */
+  }
+  
+  .customers-list td {
+    white-space: nowrap;
+  }
+  
+/* Base styles you already have above */
+
+/* Tablet (max-width: 900px) */
+@media (max-width: 900px) {
+  .test-page {
+    padding: 3rem 2rem;
+  }
+
+  .test-page h1 {
+    font-size: 1.8rem;
+  }
+
+  .test-page h2 {
+    font-size: 1.2rem;
+  }
+
+  .test-page button {
+    min-width: auto;
+    padding: 0.5rem 1rem;
+    font-size: 0.95rem;
+  }
+
+  .customers-list table {
+    font-size: 0.9rem;
+  }
+}
+
+/* Phone (max-width: 600px) */
+@media (max-width: 600px) {
+  .test-page {
+    padding: 2rem 1rem;
+    margin-top: 20px;
+  }
+
+  .test-page h1 {
+    font-size: 1.5rem;
+  }
+
+  .test-page h2 {
+    font-size: 1.1rem;
+  }
+
+  .test-page button {
+    width: 100%; /* stack buttons full-width on phone */
+    margin-bottom: 0.5rem;
+    font-size: 0.9rem;
+  }
+
+  .customers-list {
+    overflow-x: auto; /* allow horizontal scroll on small screens */
+  }
+
+  .customers-list table {
+    min-width: 500px; /* prevent table from squishing too much */
+    font-size: 0.85rem;
+  }
+
+  .user-card {
+    padding: 0.8rem;
+  }
+}
+
+  
