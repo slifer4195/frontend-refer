@@ -5,7 +5,7 @@ import { AuthContext } from './AuthContext';
 
 function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
-  const { loggedIn, setLoggedIn, currentUser, setCurrentUser } = useContext(AuthContext);
+  const { loggedIn, setLoggedIn} = useContext(AuthContext);
   const navigate = useNavigate();
 
   const toggleMenu = () => setMenuOpen(!menuOpen);
