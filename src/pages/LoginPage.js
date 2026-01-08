@@ -13,7 +13,7 @@ export default function LoginPage() {
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      const res = await fetch('https://api.bluepoint.click/login', {
+      const res = await fetch('http://127.0.0.1:5000/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         credentials: 'include',
@@ -24,7 +24,7 @@ export default function LoginPage() {
       if (res.ok) {
         console.log("✅ Logged in as:", data.email);
         setLoggedIn(true);
-        setCurrentUser(data.email);
+        setCurrentUser({ company_name: data.company_name, email: data.email });
         // force navigate after state update
         setTimeout(() => navigate('/profile', { replace: true }), 200);
       } else {
@@ -44,7 +44,7 @@ export default function LoginPage() {
         <form onSubmit={handleLogin}>
           <input
             type="email"
-            placeholder="Username"
+            placeholder="Email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
           />

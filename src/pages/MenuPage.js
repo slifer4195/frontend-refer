@@ -7,7 +7,7 @@ export default function MenuPage() {
   const [editingItem, setEditingItem] = useState(null); // for popup
 
   const fetchMenu = async () => {
-    const res = await fetch('https://api.bluepoint.click/list_menu', {
+    const res = await fetch('http://127.0.0.1:5000/list_menu', {
       credentials: 'include',
     });
     const data = await res.json();
@@ -23,7 +23,7 @@ export default function MenuPage() {
   };
 
   const createItem = async () => {
-    const res = await fetch('https://api.bluepoint.click/menu', {
+    const res = await fetch('http://127.0.0.1:5000/menu', {
       method: 'POST',
       credentials: 'include',
       headers: { 'Content-Type': 'application/json' },
@@ -52,7 +52,7 @@ export default function MenuPage() {
   };
 
   const saveEdit = async () => {
-    await fetch(`https://api.bluepoint.click/update_menu/${editingItem.id}`, {
+    await fetch(`http://127.0.0.1:5000/update_menu/${editingItem.id}`, {
       method: 'PUT',
       credentials: 'include',
       headers: { 'Content-Type': 'application/json' },
@@ -67,7 +67,7 @@ export default function MenuPage() {
   };
 
   const deleteItem = async (id) => {
-    await fetch(`https://api.bluepoint.click/delete_item/${id}`, {
+    await fetch(`http://127.0.0.1:5000/delete_item/${id}`, {
       method: 'DELETE',
       credentials: 'include',
     });

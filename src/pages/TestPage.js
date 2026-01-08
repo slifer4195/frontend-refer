@@ -9,7 +9,7 @@ export default function TestPage() {
 
   const handlePing = async () => {
     try {
-      const res = await fetch('https://api.bluepoint.click/ping', {
+      const res = await fetch('http://127.0.0.1:5000/ping', {
         credentials: 'include',
       });
       const text = await res.text();
@@ -21,7 +21,7 @@ export default function TestPage() {
 
   const handleLogout = async () => {
     try {
-      const res = await fetch('https://api.bluepoint.click/logout', {
+      const res = await fetch('http://127.0.0.1:5000/logout', {
         method: 'POST',
         credentials: 'include',
       });
@@ -36,7 +36,7 @@ export default function TestPage() {
 
   const fetchCurrentUser = async () => {
     try {
-      const res = await fetch('https://api.bluepoint.click/me', {
+      const res = await fetch('http://127.0.0.1:5000/me', {
         credentials: 'include',
       });
       if (!res.ok) throw new Error('Not authenticated');
@@ -57,7 +57,7 @@ export default function TestPage() {
 
   const fetchData = async () => {
     try {
-      const res = await fetch('https://api.bluepoint.click/user-customer', {
+      const res = await fetch('http://127.0.0.1:5000/user-customer', {
         credentials: 'include',
       });
       const json = await res.json();
@@ -71,7 +71,7 @@ export default function TestPage() {
     if (!window.confirm('Are you sure you want to delete this user?')) return;
 
     try {
-      const res = await fetch(`https://api.bluepoint.click/user_delete/${userId}`, {
+      const res = await fetch(`http://127.0.0.1:5000/user_delete/${userId}`, {
         method: 'DELETE',
         credentials: 'include',
       });

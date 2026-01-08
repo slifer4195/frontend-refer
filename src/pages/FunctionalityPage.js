@@ -21,7 +21,7 @@ export default function ProfilePage() {
 
   const fetchUser = async () => {
     try {
-      const res = await fetch('https://api.bluepoint.click/me', {
+      const res = await fetch('http://127.0.0.1:5000/me', {
         credentials: 'include',
       });
       if (!res.ok) throw new Error('Not logged in');
@@ -34,7 +34,7 @@ export default function ProfilePage() {
 
   const fetchCustomers = async () => {
     try {
-      const res = await fetch('https://api.bluepoint.click/customers', {
+      const res = await fetch('http://127.0.0.1:5000/customers', {
         credentials: 'include',
       });
       const data = await res.json();
@@ -42,7 +42,7 @@ export default function ProfilePage() {
       const customersWithPoints = await Promise.all(
         data.map(async (customer) => {
           try {
-            const pointRes = await fetch(`https://api.bluepoint.click/customer_point/${customer.id}`, {
+            const pointRes = await fetch(`http://127.0.0.1:5000/customer_point/${customer.id}`, {
               credentials: 'include',
             });
             if (!pointRes.ok) throw new Error('Failed to fetch points');
@@ -61,23 +61,9 @@ export default function ProfilePage() {
     }
   };
 
-  // const fetchCustomerCount = async () => {
-  //   try {
-  //     const res = await fetch('https://api.bluepoint.click/customer-count', {
-  //       credentials: 'include',
-  //     });
-  //     if (!res.ok) throw new Error('Failed to fetch count');
-  //     const data = await res.json();
-  //     setCustomerCount(data.customer_count);
-  //   } catch (err) {
-  //     setError('Unable to fetch customer count');
-  //   }
-  // };
-
-
   const handleAddCustomer = async () => {
     try {
-      const res = await fetch('https://api.bluepoint.click/add-customer', {
+      const res = await fetch('http://127.0.0.1:5000/add-customer', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -102,7 +88,7 @@ export default function ProfilePage() {
 
   const fetchMenu = async () => {
     try {
-      const res = await fetch('https://api.bluepoint.click/list_menu', {
+      const res = await fetch('http://127.0.0.1:5000/list_menu', {
         credentials: 'include',
       });
       const data = await res.json();
@@ -125,7 +111,7 @@ export default function ProfilePage() {
 
   const handleRedeemItem = async (item) => {
     try {
-        const res = await fetch(`https://api.bluepoint.click/deduct_point/${selectedCustomer.id}/${item.id}`, {
+        const res = await fetch(`http://127.0.0.1:5000/deduct_point/${selectedCustomer.id}/${item.id}`, {
         method: 'GET',
         credentials: 'include',
       });
@@ -138,7 +124,7 @@ export default function ProfilePage() {
       }
       // Update points locally with server response
       setCustomers((prev) =>
-        prev.map((c) =>
+        prev.map((c) => 
           c.id === selectedCustomer.id
             ? { ...c, points: data.points }
             : c
@@ -158,7 +144,7 @@ export default function ProfilePage() {
     setLoading(true);
     
     try {
-      const sessionRes = await fetch('https://api.bluepoint.click/session', {
+      const sessionRes = await fetch('http://127.0.0.1:5000/session', {
         credentials: 'include',
       });
       if (!sessionRes.ok) throw new Error('Failed to fetch session');
@@ -171,7 +157,7 @@ export default function ProfilePage() {
         ? `You earned ${point} points for ${user.company_name}! Your current point total is ${customerPoints + point}.`
         : `You redeemed ${Math.abs(point)} points at ${user.company_name}. Your current point total is ${customerPoints - point}.`;
     
-      const res = await fetch('https://api.bluepoint.click/send-test-email', {
+      const res = await fetch('http://127.0.0.1:5000/send-test-email', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         credentials: 'include',

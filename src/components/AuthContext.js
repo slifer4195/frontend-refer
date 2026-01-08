@@ -10,18 +10,26 @@ export function AuthProvider({ children }) {
   useEffect(() => {
     const checkLogin = async () => {
       try {
-        const res = await fetch('https://api.bluepoint.click/logged', {
+        const res = await fetch('http://127.0.0.1:5000/logged', {
           credentials: 'include',
         });
         const data = await res.json();
         if (data.logged_in) {
           setLoggedIn(true);
-          const userRes = await fetch('https://api.bluepoint.click/me', {
+          const userRes = await fetch('http://127.0.0.1:5000/me', {
             credentials: 'include',
           });
           if (userRes.ok) {
             const userData = await userRes.json();
             setCurrentUser(userData);
+          } else {
+            console.error('Failed to fetch user data from /me endpoint:', userRes.status);
+            try {
+              const errorData = await userRes.json();
+              console.error('Error details:', errorData);
+            } catch (e) {
+              console.error('Could not parse error response');
+            }
           }
         } else {
           setLoggedIn(false);

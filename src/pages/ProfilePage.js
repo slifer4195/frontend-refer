@@ -4,11 +4,36 @@ import '../style/profile.css';
 import { AuthContext } from '../components/AuthContext';
 
 export default function ProfilePage() {
-  const { currentUser, loggedIn } = useContext(AuthContext);
+  const { currentUser, loggedIn, setCurrentUser } = useContext(AuthContext);
   const [customers, setCustomers] = useState([]);
   const [customerCount, setCustomerCount] = useState(null);
   const [error, setError] = useState(null);
+  const [isEditingCompany, setIsEditingCompany] = useState(false);
+  const [newCompanyName, setNewCompanyName] = useState('');
+  const [companyError, setCompanyError] = useState(null);
   const navigate = useNavigate();
+
+  // Fetch user data if logged in but currentUser is missing
+  useEffect(() => {
+    const fetchUserData = async () => {
+      if (loggedIn && !currentUser) {
+        try {
+          const res = await fetch('http://127.0.0.1:5000/me', {
+            credentials: 'include',
+          });
+          if (res.ok) {
+            const userData = await res.json();
+            setCurrentUser(userData);
+          } else {
+            console.error('Failed to fetch user data in ProfilePage');
+          }
+        } catch (err) {
+          console.error('Error fetching user data in ProfilePage:', err);
+        }
+      }
+    };
+    fetchUserData();
+  }, [loggedIn, currentUser, setCurrentUser]);
 
   // Always call hooks unconditionally
   useEffect(() => {
@@ -20,7 +45,7 @@ export default function ProfilePage() {
 
     const fetchCustomers = async () => {
       try {
-        const res = await fetch('https://api.bluepoint.click/customers', {
+        const res = await fetch('http://127.0.0.1:5000/customers', {
           credentials: 'include',
         });
         if (!res.ok) throw new Error('Failed to fetch customers');
@@ -33,7 +58,7 @@ export default function ProfilePage() {
 
     const fetchCustomerCount = async () => {
       try {
-        const res = await fetch('https://api.bluepoint.click/customer-count', {
+        const res = await fetch('http://127.0.0.1:5000/customer-count', {
           credentials: 'include',
         });
         if (!res.ok) throw new Error('Failed to fetch count');
@@ -50,7 +75,7 @@ export default function ProfilePage() {
 
   const handleDeleteCustomer = async (email) => {
     try {
-      const res = await fetch('https://api.bluepoint.click/delete-customer', {
+      const res = await fetch('http://127.0.0.1:5000/delete-customer', {
         method: 'DELETE',
         headers: { 'Content-Type': 'application/json' },
         credentials: 'include',
@@ -71,6 +96,49 @@ export default function ProfilePage() {
     }
   };
 
+  const handleEditCompany = () => {
+    setIsEditingCompany(true);
+    setNewCompanyName(currentUser?.company_name || '');
+    setCompanyError(null);
+  };
+
+  const handleCancelEdit = () => {
+    setIsEditingCompany(false);
+    setNewCompanyName('');
+    setCompanyError(null);
+  };
+
+  const handleSaveCompany = async () => {
+    if (!newCompanyName.trim()) {
+      setCompanyError('Company name cannot be empty');
+      return;
+    }
+
+    try {
+      const res = await fetch('http://127.0.0.1:5000/edit_company', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
+        body: JSON.stringify({ company_name: newCompanyName.trim() }),
+      });
+
+      const data = await res.json();
+
+      if (res.ok) {
+        // Update the currentUser in context
+        setCurrentUser({ ...currentUser, company_name: newCompanyName.trim() });
+        setIsEditingCompany(false);
+        setNewCompanyName('');
+        setCompanyError(null);
+      } else {
+        setCompanyError(data.error || 'Failed to update company name');
+      }
+    } catch (err) {
+      console.error('Edit company failed', err);
+      setCompanyError('Error connecting to server');
+    }
+  };
+
   if (!loggedIn) {
     return <p>Redirecting to login...</p>;
   }
@@ -84,9 +152,31 @@ export default function ProfilePage() {
 
             {currentUser ? (
               <div className="company-info">
-                <p className="company-name">
-                  <strong>Company:</strong> {currentUser.company_name}
-                </p>
+                {isEditingCompany ? (
+                  <div className="company-edit-section">
+                    <div className="company-edit-input">
+                      <label>
+                        <strong>Company:</strong>
+                        <input
+                          type="text"
+                          value={newCompanyName}
+                          onChange={(e) => setNewCompanyName(e.target.value)}
+                          placeholder="Enter company name"
+                        />
+                      </label>
+                      {companyError && <p className="error-message">{companyError}</p>}
+                    </div>
+                    <div className="company-edit-buttons">
+                      <button onClick={handleSaveCompany} className="save-btn">Save</button>
+                      <button onClick={handleCancelEdit} className="cancel-btn">Cancel</button>
+                    </div>
+                  </div>
+                ) : (
+                  <p className="company-name">
+                    <strong>Company:</strong> {currentUser.company_name}
+                    <button onClick={handleEditCompany} className="edit-company-btn">Edit</button>
+                  </p>
+                )}
                 <p className="email">
                   <strong>Email:</strong> {currentUser.email}
                 </p>
