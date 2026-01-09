@@ -50,7 +50,24 @@ export default function ProfilePage() {
         });
         if (!res.ok) throw new Error('Failed to fetch customers');
         const data = await res.json();
-        setCustomers(data);
+
+        // Fetch points for each customer
+        const customersWithPoints = await Promise.all(
+          data.map(async (customer) => {
+            try {
+              const pointRes = await fetch(`http://127.0.0.1:5000/customer_point/${customer.id}`, {
+                credentials: 'include',
+              });
+              if (!pointRes.ok) throw new Error('Failed to fetch points');
+              const pointData = await pointRes.json();
+              return { ...customer, points: pointData.points };
+            } catch {
+              return { ...customer, points: 0 };
+            }
+          })
+        );
+
+        setCustomers(customersWithPoints);
       } catch (err) {
         console.error('Failed to fetch customers', err);
       }
@@ -210,7 +227,7 @@ export default function ProfilePage() {
                 <strong>Referral Program:</strong> Earn <strong>2 points</strong> whenever a customer you referred brings in a new customer.
               </li>
               <li>
-                <strong>Functionality Page:</strong> Manage customers, update points, and remove accounts when needed.
+                <strong>Reward Dashboard Page:</strong> Manage customers, update points, and remove accounts when needed.
               </li>
               <li>
                 <strong>Menu Page:</strong> Create and display a list of services or items customers can redeem with their points.
@@ -219,16 +236,21 @@ export default function ProfilePage() {
           </div>
         </div>
 
-        <div className="customer-list">
-          <h2 className='customer-title'>Customer List</h2>
-          <ul>
-            {customers.map((customer) => (
-              <li key={customer.id}>
-                {customer.email}
-                <button onClick={() => handleDeleteCustomer(customer.email)}>Delete</button>
-              </li>
-            ))}
-          </ul>
+        <div className="customer-list-wrapper">
+          <div className="customer-list">
+            <h2 className='customer-title'>Customer List</h2>
+            <ul>
+              {customers.map((customer) => (
+                <li key={customer.id}>
+                  <div className="customer-info">
+                    <span className="customer-email">{customer.email}</span>
+                    <span className="customer-points">{customer.points !== undefined ? customer.points : 0} pts</span>
+                  </div>
+                  <button onClick={() => handleDeleteCustomer(customer.email)}>Delete</button>
+                </li>
+              ))}
+            </ul>
+          </div>
         </div>
       </div>
     </div>

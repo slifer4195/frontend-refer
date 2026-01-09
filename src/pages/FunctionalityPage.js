@@ -197,7 +197,7 @@ export default function ProfilePage() {
   return (
     <div className="functionality-page">
       <div className="functionality-container">
-            <h1>Functionality Page</h1>
+            <h1>Reward Dashboard</h1>
 
             {error && <p style={{ color: 'red' }}>{error}</p>}
 
@@ -216,34 +216,64 @@ export default function ProfilePage() {
             <ul className="customer-list">
             {customers.map((customer) => (
               <li key={customer.id} className="customer-item">
-                <span className="customer-info">
-                  {customer.email} — <strong>Points:</strong> {customer.points}
-                </span>
+                <div className="customer-info">
+                  <span className="customer-email">{customer.email}</span>
+                  <span className="customer-points">{customer.points !== undefined && customer.points !== 'N/A' ? customer.points : 0} pts</span>
+                </div>
                 <div className="customer-actions">
-                  <button onClick={() => handleSendEmail(customer.email, customer.id,customer.points, 1)}disabled={loading}>
-                  Loyalty
+                  <button 
+                    onClick={() => handleSendEmail(customer.email, customer.id,customer.points, 1)}
+                    disabled={loading}
+                    title="Award 1 point for a returning customer purchase"
+                  >
+                    Loyalty
                   </button>
-                  <button onClick={() => handleSendEmail(customer.email, customer.id,customer.points, 2)}disabled={loading}>
-                  Referal
+                  <button 
+                    onClick={() => handleSendEmail(customer.email, customer.id,customer.points, 2)}
+                    disabled={loading}
+                    title="Award 2 points when this customer refers a new customer"
+                  >
+                    Referal
                   </button>
-                  <button onClick={() => handleUsePoint(customer)}>Redeem</button>
+                  <button 
+                    onClick={() => handleUsePoint(customer)}
+                    title="Allow customer to redeem points for menu items"
+                  >
+                    Redeem
+                  </button>
                 </div>
               </li>
             ))}
           </ul>
 
-            <h2>Menu Items</h2>
-            <ul className="menu-list">
-            {items.length > 0 ? (
-              items.map((item) => (
-                <li key={item.id}>
-                  ID: {item.id} — {item.name} — ${item.price.toFixed(2)} — Required Points: {item.required_points}
-                </li>
-              ))
-            ) : (
-              <p className="no-items">No items to show.</p>
-            )}
-          </ul>
+            <div className="menu-items-section">
+              <h2 className="menu-items-title">Menu Items ({items.length})</h2>
+              {items.length > 0 ? (
+                <ul className="menu-items-list">
+                  {items.map((item) => (
+                    <li key={item.id} className="menu-item-card">
+                      <div className="menu-item-info">
+                        <h4 className="item-name">{item.name}</h4>
+                        <div className="item-details">
+                          <div className="detail-badge price-badge">
+                            <span className="detail-label">Price</span>
+                            <span className="detail-value">${item.price.toFixed(2)}</span>
+                          </div>
+                          <div className="detail-badge points-badge">
+                            <span className="detail-label">Points</span>
+                            <span className="detail-value">{item.required_points}</span>
+                          </div>
+                        </div>
+                      </div>
+                    </li>
+                  ))}
+                </ul>
+              ) : (
+                <div className="no-items">
+                  <p>No menu items available. Add items from the Menu page.</p>
+                </div>
+              )}
+            </div>
 
           <PointsModal
               customer={selectedCustomer}

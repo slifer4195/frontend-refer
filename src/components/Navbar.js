@@ -60,7 +60,7 @@ function Navbar() {
             {loggedIn && (
               <>
                 <li><NavLink to="/profile" onClick={() => setMenuOpen(false)}>Profile</NavLink></li>
-                <li><NavLink to="/functionality" onClick={() => setMenuOpen(false)}>Functionality</NavLink></li>
+                <li><NavLink to="/functionality" onClick={() => setMenuOpen(false)}>Reward Dashboard</NavLink></li>
                 <li><NavLink to="/menu" onClick={() => setMenuOpen(false)}>Menu</NavLink></li>
                 <li className="logout-button" onClick={handleLogout}>Logout</li>
               </>

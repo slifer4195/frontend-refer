@@ -77,64 +77,104 @@ export default function MenuPage() {
   return (
     <div className="menu-page">
       <div className="menu-container">
-        <h3>Add item to the menu</h3>
-        <div className="menu-form">
-          <input name="item" placeholder="Item" value={form.item} onChange={handleInputChange} />
-          <input name="price" placeholder="Price" value={form.price} onChange={handleInputChange} />
-          <input
-            name="required_points"
-            placeholder="Points (0-100)"
-            value={form.required_points}
-            onChange={handleInputChange}
-          />
-          <button onClick={createItem}>Add</button>
+        <h1 className="menu-page-title">Menu Management</h1>
+        <div className="add-item-section">
+          <h3 className="add-item-title">Add New Item</h3>
+          <div className="menu-form">
+            <div className="form-group">
+              <label>Item Name</label>
+              <input name="item" placeholder="e.g., Free Coffee" value={form.item} onChange={handleInputChange} />
+            </div>
+            <div className="form-group">
+              <label>Price ($)</label>
+              <input name="price" type="number" step="0.01" placeholder="0.00" value={form.price} onChange={handleInputChange} />
+            </div>
+            <div className="form-group">
+              <label>Required Points</label>
+              <input
+                name="required_points"
+                type="number"
+                placeholder="e.g., 10"
+                value={form.required_points}
+                onChange={handleInputChange}
+              />
+            </div>
+            <button onClick={createItem} className="add-item-btn">Add Item</button>
+          </div>
         </div>
 
-        {items.length > 0 ? (
-          <ul className="menu-list">
-            {items.map((item) => (
-              <li key={item.id}>
-                <span className="menu-item">
-              <strong>{item.name}</strong> | 
-              <span className="price">${item.price.toFixed(2)}</span> | 
-              <span className="points"><strong>Required Points:</strong> {item.required_points}</span>
-              </span>
-                <div>
-                  <button onClick={() => openEditPopup(item)}>Edit</button>
-                  <button onClick={() => deleteItem(item.id)}>Delete</button>
-                </div>
-              </li>
-            ))}
-          </ul>
-        ) : (
-          <p className="no-items">No items to show.</p>
-        )}
+        <div className="menu-items-section">
+          <h3 className="menu-items-title">Menu Items ({items.length})</h3>
+          {items.length > 0 ? (
+            <ul className="menu-list">
+              {items.map((item) => (
+                <li key={item.id} className="menu-item-card">
+                  <div className="menu-item-info">
+                    <h4 className="item-name">{item.name}</h4>
+                    <div className="item-details">
+                      <div className="detail-badge price-badge">
+                        <span className="detail-label">Price</span>
+                        <span className="detail-value">${item.price.toFixed(2)}</span>
+                      </div>
+                      <div className="detail-badge points-badge">
+                        <span className="detail-label">Points</span>
+                        <span className="detail-value">{item.required_points}</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="menu-item-actions">
+                    <button onClick={() => openEditPopup(item)} className="edit-btn">Edit</button>
+                    <button onClick={() => deleteItem(item.id)} className="delete-btn">Delete</button>
+                  </div>
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <div className="no-items">
+              <p>No menu items yet. Add your first item above!</p>
+            </div>
+          )}
+        </div>
       </div>
 
       {editingItem && (
-        <div className="popup-overlay">
-          <div className="popup">
-            <h3>Edit Menu Item</h3>
-            <input
-              name="name"
-              placeholder="Item Name"
-              value={editingItem.name}
-              onChange={handleEditChange}
-            />
-            <input
-              name="price"
-              placeholder="Price"
-              value={editingItem.price}
-              onChange={handleEditChange}
-            />
-            <input
-              name="required_points"
-              placeholder="Required Points"
-              value={editingItem.required_points}
-              onChange={handleEditChange}
-            />
+        <div className="popup-overlay" onClick={closeEditPopup}>
+          <div className="popup" onClick={(e) => e.stopPropagation()}>
+            <h3 className="popup-title">Edit Menu Item</h3>
+            <div className="popup-form">
+              <div className="form-group">
+                <label>Item Name</label>
+                <input
+                  name="name"
+                  placeholder="Item Name"
+                  value={editingItem.name}
+                  onChange={handleEditChange}
+                />
+              </div>
+              <div className="form-group">
+                <label>Price ($)</label>
+                <input
+                  name="price"
+                  type="number"
+                  step="0.01"
+                  placeholder="0.00"
+                  value={editingItem.price}
+                  onChange={handleEditChange}
+                />
+              </div>
+              <div className="form-group">
+                <label>Required Points</label>
+                <input
+                  name="required_points"
+                  type="number"
+                  placeholder="Required Points"
+                  value={editingItem.required_points}
+                  onChange={handleEditChange}
+                />
+              </div>
+            </div>
             <div className="popup-buttons">
-              <button className="save" onClick={saveEdit}>Save</button>
+              <button className="save" onClick={saveEdit}>Save Changes</button>
               <button className="cancel" onClick={closeEditPopup}>Cancel</button>
             </div>
           </div>
