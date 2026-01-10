@@ -150,6 +150,7 @@
 .customer-list {
   text-align: left;
   padding: calc(1.75rem - 3px) calc(2.5rem - 3px);
+  padding-top: calc(1.75rem - 3px + 0.5rem);
   background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
   border-radius: 20px;
   box-shadow: 0 10px 40px rgba(0, 0, 0, 0.12), 0 2px 8px rgba(0, 0, 0, 0.08);
@@ -157,6 +158,16 @@
   position: relative;
   overflow: hidden;
   width: 100%;
+}
+
+.customer-list::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 20px;
+  right: 20px;
+  height: 3px;
+  background: linear-gradient(90deg, #4facfe, #a044ff);
 }
 
 

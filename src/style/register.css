@@ -12,10 +12,17 @@
   .register-page .register-container {
     background: white;
     padding: 2.5rem;
+    padding-bottom: 2rem;
     border-radius: 12px;
     box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
-    width: 400px;
+    width: 500px;
+    max-width: 90%;
     text-align: center;
+    min-height: auto;
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
+    overflow: visible;
   }
   
   .register-page .register-container h1 {
@@ -61,6 +68,12 @@
     background: linear-gradient(90deg, #3b8dff, #8a2be2);
   }
   
+  .register-page .register-link {
+    margin-top: 1rem;
+    margin-bottom: 0;
+    font-size: 0.9rem;
+  }
+  
   .register-page .register-link a {
     color: blue;
     text-decoration: none;
@@ -73,7 +86,9 @@
   }
   
   .register-container{
-    height: 400px;
+    min-height: auto;
+    max-height: 95vh;
+    overflow-y: auto;
   }
   .message {
     margin-top: 1rem;
@@ -94,8 +109,75 @@
     color: #842029;
     border: 1px solid #f5c2c7;
   }
+
+  .divider {
+    display: flex;
+    align-items: center;
+    text-align: center;
+    margin: 1.5rem 0;
+  }
+
+  .divider::before,
+  .divider::after {
+    content: '';
+    flex: 1;
+    border-bottom: 1px solid #ddd;
+  }
+
+  .divider span {
+    padding: 0 1rem;
+    color: #666;
+    font-size: 0.9rem;
+  }
+
+  .google-signin-btn {
+    width: 100%;
+    padding: 0.75rem;
+    margin-top: 0.5rem;
+    background: white;
+    color: #333;
+    border: 1px solid #ddd;
+    border-radius: 50px;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+
+  .google-signin-btn:hover {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+    border-color: #ccc;
+    transform: translateY(-1px);
+  }
+
+  .google-icon {
+    width: 20px;
+    height: 20px;
+  }
   
+  /* Tablet size - keep original width */
+  @media (max-width: 1024px) {
+    .register-page .register-container {
+      width: 400px;
+      max-width: 90%;
+      padding: 2.5rem;
+      padding-bottom: 2rem;
+    }
+  }
+  
+  /* Mobile size */
   @media (max-width: 600px) {
+    .register-page .register-container {
+      width: 90%;
+      max-width: 90%;
+      padding: 2rem 1.5rem;
+    }
+    
     .register-container {
       margin-left: 1rem;
       margin-right: 1rem;
