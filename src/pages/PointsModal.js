@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import '../style/functionality.css';
 
 export default function PointsModal({ customer, items, onClose, onSubmit }) {
   const [selectedItemId, setSelectedItemId] = useState(null);
@@ -28,48 +29,71 @@ export default function PointsModal({ customer, items, onClose, onSubmit }) {
 
   return (
     <>
-      <div style={{
-        position: 'fixed', top: '20%', left: '30%', width: '40%',
-        backgroundColor: 'white', border: '1px solid black', padding: 20, zIndex: 1000
-      }}>
-        <h3>Use Points for {customer.email}</h3>
-        <p>Current Points: {customer.points}</p>
+      <div className="points-modal-overlay" onClick={onClose} />
+      <div className="points-modal-container">
+        <div className="points-modal-header">
+          <h3 className="points-modal-title">Redeem Points</h3>
+          <button className="points-modal-close-btn" onClick={onClose} aria-label="Close">
+            ×
+          </button>
+        </div>
+        
+        <div className="points-modal-body">
+          <div className="points-modal-customer-info">
+            <p className="points-modal-email">{customer.email}</p>
+            <div className="points-modal-badge">
+              <span className="points-modal-badge-label">Current Points</span>
+              <span className="points-modal-badge-value">{customer.points}</span>
+            </div>
+          </div>
 
-        <h4>Select an item to redeem:</h4>
-        {affordableItems.length > 0 ? (
-          <ul style={{ listStyle: 'none', paddingLeft: 0 }}>
-            {affordableItems.map(item => (
-              <li key={item.id}>
-                <label>
-                  <input
-                    type="radio"
-                    name="redeemItem"
-                    value={item.id}
-                    checked={selectedItemId === item.id}
-                    onChange={() => setSelectedItemId(item.id)}
-                  />
-                  {` ${item.name} — Required Points: ${item.required_points}`}
-                </label>
-              </li>
-            ))}
-          </ul>
-        ) : (
-          <p>No items available within your points.</p>
-        )}
+          <div className="points-modal-items-section">
+            <h4 className="points-modal-subtitle">Select an item to redeem:</h4>
+            {affordableItems.length > 0 ? (
+              <ul className="points-modal-items-list">
+                {affordableItems.map(item => (
+                  <li key={item.id} className={`points-modal-item ${selectedItemId === item.id ? 'selected' : ''}`}>
+                    <label className="points-modal-item-label">
+                      <input
+                        type="radio"
+                        name="redeemItem"
+                        value={item.id}
+                        checked={selectedItemId === item.id}
+                        onChange={() => setSelectedItemId(item.id)}
+                        className="points-modal-radio"
+                      />
+                      <div className="points-modal-item-content">
+                        <span className="points-modal-item-name">{item.name}</span>
+                        <span className="points-modal-item-points">{item.required_points} points</span>
+                      </div>
+                    </label>
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <div className="points-modal-empty">
+                <p>No items available within your points.</p>
+              </div>
+            )}
+          </div>
+        </div>
 
-        <button 
-          onClick={handleSubmit} 
-          disabled={!selectedItemId || isSubmitting}
-        >
-          {isSubmitting ? 'Submitting...' : 'Submit'}
-        </button>{' '}
-        <button onClick={onClose}>Close</button>
+        <div className="points-modal-footer">
+          <button 
+            className="points-modal-btn points-modal-btn-secondary"
+            onClick={onClose}
+          >
+            Cancel
+          </button>
+          <button 
+            className="points-modal-btn points-modal-btn-primary"
+            onClick={handleSubmit} 
+            disabled={!selectedItemId || isSubmitting}
+          >
+            {isSubmitting ? 'Processing...' : 'Redeem'}
+          </button>
+        </div>
       </div>
-
-      <div onClick={onClose} style={{
-        position: 'fixed', top: 0, left: 0, right: 0, bottom: 0,
-        backgroundColor: 'rgba(0,0,0,0.3)', zIndex: 999
-      }} />
     </>
   );
 }

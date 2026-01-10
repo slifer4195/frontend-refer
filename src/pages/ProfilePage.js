@@ -2,6 +2,7 @@ import React, { useEffect, useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../style/profile.css';
 import { AuthContext } from '../components/AuthContext';
+import ConfirmationModal from '../components/ConfirmationModal';
 
 export default function ProfilePage() {
   const { currentUser, loggedIn, setCurrentUser } = useContext(AuthContext);
@@ -11,6 +12,7 @@ export default function ProfilePage() {
   const [isEditingCompany, setIsEditingCompany] = useState(false);
   const [newCompanyName, setNewCompanyName] = useState('');
   const [companyError, setCompanyError] = useState(null);
+  const [deleteConfirmation, setDeleteConfirmation] = useState({ isOpen: false, email: null });
   const navigate = useNavigate();
 
   // Fetch user data if logged in but currentUser is missing
@@ -90,7 +92,14 @@ export default function ProfilePage() {
     fetchCustomerCount();
   }, [loggedIn, navigate]);
 
-  const handleDeleteCustomer = async (email) => {
+  const handleDeleteClick = (email) => {
+    setDeleteConfirmation({ isOpen: true, email });
+  };
+
+  const handleDeleteConfirm = async () => {
+    const { email } = deleteConfirmation;
+    if (!email) return;
+
     try {
       const res = await fetch('http://127.0.0.1:5000/delete-customer', {
         method: 'DELETE',
@@ -111,6 +120,11 @@ export default function ProfilePage() {
     } catch (err) {
       console.error('Delete customer failed', err);
     }
+    setDeleteConfirmation({ isOpen: false, email: null });
+  };
+
+  const handleDeleteCancel = () => {
+    setDeleteConfirmation({ isOpen: false, email: null });
   };
 
   const handleEditCompany = () => {
@@ -246,13 +260,24 @@ export default function ProfilePage() {
                     <span className="customer-email">{customer.email}</span>
                     <span className="customer-points">{customer.points !== undefined ? customer.points : 0} pts</span>
                   </div>
-                  <button onClick={() => handleDeleteCustomer(customer.email)}>Delete</button>
+                  <button onClick={() => handleDeleteClick(customer.email)}>Delete</button>
                 </li>
               ))}
             </ul>
           </div>
         </div>
       </div>
+
+      <ConfirmationModal
+        isOpen={deleteConfirmation.isOpen}
+        onClose={handleDeleteCancel}
+        onConfirm={handleDeleteConfirm}
+        title="Delete Customer"
+        message={`Are you sure you want to delete customer "${deleteConfirmation.email}"? This action cannot be undone.`}
+        confirmText="Delete"
+        cancelText="Cancel"
+        type="danger"
+      />
     </div>
   );
 }

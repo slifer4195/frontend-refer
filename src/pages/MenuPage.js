@@ -112,13 +112,13 @@ export default function MenuPage() {
                   <div className="menu-item-info">
                     <h4 className="item-name">{item.name}</h4>
                     <div className="item-details">
-                      <div className="detail-badge price-badge">
-                        <span className="detail-label">Price</span>
-                        <span className="detail-value">${item.price.toFixed(2)}</span>
-                      </div>
                       <div className="detail-badge points-badge">
                         <span className="detail-label">Points</span>
                         <span className="detail-value">{item.required_points}</span>
+                      </div>
+                      <div className="detail-badge price-badge">
+                        <span className="detail-label">Price</span>
+                        <span className="detail-value">${item.price.toFixed(2)}</span>
                       </div>
                     </div>
                   </div>

@@ -143,6 +143,10 @@
   font-weight: 600;
 }
 
+.customer-list-wrapper {
+  width: 100%;
+}
+
 .customer-list {
   text-align: left;
   padding: calc(1.75rem - 3px) calc(2.5rem - 3px);
@@ -152,6 +156,7 @@
   border: 1px solid rgba(79, 172, 254, 0.1);
   position: relative;
   overflow: hidden;
+  width: 100%;
 }
 
 
@@ -522,25 +527,48 @@
 
 @media (max-width: 480px) {
   .profile-page {
-    padding: 2rem;
+    padding: 2rem 1rem;
     justify-content: center;
     align-items: center;
   }
 
   .profile-container {
-    margin-top: 3rem;
+    margin-top: 4rem;
     align-items: center; /* center children */
   }
 
   .top-profile {
     flex-direction: column;
-    align-items: center; /* center each card */
-
-  }
-  .customer-list {
+    align-items: stretch;
     width: 100%;
-    max-width: 100%; /* match company-info and programs-section */
+    padding: 0 1rem;
+  }
 
+  .company-info,
+  .programs-section {
+    width: 100%;
+    max-width: 100%;
+    margin-left: 0;
+    margin-right: 0;
+    box-sizing: border-box;
+  }
+
+  .company-info .company-name {
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+
+  .company-info .company-name strong {
+    flex-shrink: 0;
+  }
+
+  .company-info .company-name .edit-company-btn {
+    flex-basis: 100%;
+    margin-left: 0;
+    margin-top: 0.5rem;
+    width: auto;
   }
 
 }
