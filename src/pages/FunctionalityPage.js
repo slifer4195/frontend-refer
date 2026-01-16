@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
 import PointsModal from './PointsModal'; // adjust path as needed
 import '../style/functionality.css';
 
@@ -9,8 +9,8 @@ export default function ProfilePage() {
   const [items, setItems] = useState([]); // menu items state
   const [error, setError] = useState(null);
   const [selectedCustomer, setSelectedCustomer] = useState(null);
-  const [newCustomerEmail, setNewCustomerEmail] = useState('');
   const [loading, setLoading] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
 
   useEffect(() => {
     fetchUser();
@@ -61,29 +61,27 @@ export default function ProfilePage() {
     }
   };
 
-  const handleAddCustomer = async () => {
-    try {
-      const res = await fetch('http://127.0.0.1:5000/add-customer', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        credentials: 'include',
-        body: JSON.stringify({ email: newCustomerEmail }),
-      });
-
-      const data = await res.json();
-      if (res.ok) {
-        setNewCustomerEmail('');
-        fetchCustomers();
-        // fetchCustomerCount();
-      } else {
-        alert(data.error);
-      }
-    } catch (err) {
-      console.error('Add customer failed', err);
+  // Filter and sort customers based on search query
+  const filteredAndSortedCustomers = useMemo(() => {
+    if (!searchQuery.trim()) {
+      return customers;
     }
-  };
+
+    const query = searchQuery.toLowerCase();
+    const matching = customers.filter(customer => 
+      customer.email.toLowerCase().includes(query)
+    );
+    const nonMatching = customers.filter(customer => 
+      !customer.email.toLowerCase().includes(query)
+    );
+    
+    // Put matching customers at the top
+    return [...matching, ...nonMatching].map((customer, index, array) => ({
+      ...customer,
+      isMatch: matching.includes(customer),
+      isTopMatch: matching.includes(customer) && index === 0
+    }));
+  }, [customers, searchQuery]);
 
 
   const fetchMenu = async () => {
@@ -201,21 +199,20 @@ export default function ProfilePage() {
 
             {error && <p style={{ color: 'red' }}>{error}</p>}
 
-            <div className="add-customer">
-              <div className="add-customer-form">
-                <input
-                  type="email"
-                  value={newCustomerEmail}
-                  onChange={(e) => setNewCustomerEmail(e.target.value)}
-                  placeholder="Enter customer email to add"
-                />
-                <button onClick={handleAddCustomer}>Add</button>
-              </div>
+            {/* Search bar for filtering customers */}
+            <div className="customer-search-bar">
+              <input
+                type="text"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                placeholder="Search customers by email..."
+                className="customer-search-input"
+              />
             </div>
 
             <ul className="customer-list">
-            {customers.map((customer) => (
-              <li key={customer.id} className="customer-item">
+            {filteredAndSortedCustomers.map((customer) => (
+              <li key={customer.id} className={`customer-item ${customer.isTopMatch ? 'top-match' : ''}`}>
                 <div className="customer-info">
                   <span className="customer-email">{customer.email}</span>
                   <span className="customer-points">{customer.points !== undefined && customer.points !== 'N/A' ? customer.points : 0} pts</span>
@@ -233,7 +230,7 @@ export default function ProfilePage() {
                     disabled={loading}
                     title="Award 2 points when this customer refers a new customer"
                   >
-                    Referal
+                    Referral
                   </button>
                   <button 
                     onClick={() => handleUsePoint(customer)}

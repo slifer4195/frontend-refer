@@ -13,6 +13,7 @@ export default function ProfilePage() {
   const [newCompanyName, setNewCompanyName] = useState('');
   const [companyError, setCompanyError] = useState(null);
   const [deleteConfirmation, setDeleteConfirmation] = useState({ isOpen: false, email: null });
+  const [newCustomerEmail, setNewCustomerEmail] = useState('');
   const navigate = useNavigate();
 
   // Fetch user data if logged in but currentUser is missing
@@ -170,6 +171,78 @@ export default function ProfilePage() {
     }
   };
 
+  const handleAddCustomer = async () => {
+    if (!newCustomerEmail.trim()) {
+      return;
+    }
+
+    try {
+      const res = await fetch('http://127.0.0.1:5000/add-customer', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        credentials: 'include',
+        body: JSON.stringify({ email: newCustomerEmail.trim() }),
+      });
+
+      const data = await res.json();
+      if (res.ok) {
+        setNewCustomerEmail('');
+        // Refresh customers list and count
+        const fetchCustomers = async () => {
+          try {
+            const res = await fetch('http://127.0.0.1:5000/customers', {
+              credentials: 'include',
+            });
+            if (!res.ok) throw new Error('Failed to fetch customers');
+            const data = await res.json();
+
+            const customersWithPoints = await Promise.all(
+              data.map(async (customer) => {
+                try {
+                  const pointRes = await fetch(`http://127.0.0.1:5000/customer_point/${customer.id}`, {
+                    credentials: 'include',
+                  });
+                  if (!pointRes.ok) throw new Error('Failed to fetch points');
+                  const pointData = await pointRes.json();
+                  return { ...customer, points: pointData.points };
+                } catch {
+                  return { ...customer, points: 0 };
+                }
+              })
+            );
+
+            setCustomers(customersWithPoints);
+          } catch (err) {
+            console.error('Failed to fetch customers', err);
+          }
+        };
+
+        const fetchCustomerCount = async () => {
+          try {
+            const res = await fetch('http://127.0.0.1:5000/customer-count', {
+              credentials: 'include',
+            });
+            if (!res.ok) throw new Error('Failed to fetch count');
+            const data = await res.json();
+            setCustomerCount(data.customer_count);
+          } catch (err) {
+            setError('Unable to fetch customer count');
+          }
+        };
+
+        fetchCustomers();
+        fetchCustomerCount();
+      } else {
+        alert(data.error);
+      }
+    } catch (err) {
+      console.error('Add customer failed', err);
+      alert('Failed to add customer');
+    }
+  };
+
   if (!loggedIn) {
     return <p>Redirecting to login...</p>;
   }
@@ -253,6 +326,19 @@ export default function ProfilePage() {
         <div className="customer-list-wrapper">
           <div className="customer-list">
             <h2 className='customer-title'>Customer List</h2>
+
+            {/* Add Customer Form */}
+            <div className="add-customer-form-profile">
+              <input
+                type="email"
+                value={newCustomerEmail}
+                onChange={(e) => setNewCustomerEmail(e.target.value)}
+                placeholder="Add customer"
+                autoComplete="off"
+              />
+              <button onClick={handleAddCustomer} className="add-customer-btn">Add</button>
+            </div>
+
             <ul>
               {customers.map((customer) => (
                 <li key={customer.id}>
