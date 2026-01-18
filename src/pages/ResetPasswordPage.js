@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import '../style/login.css';
+import API_URL from '../config/api';
 
 export default function ResetPasswordPage() {
   const [email, setEmail] = useState('');
@@ -15,7 +16,7 @@ export default function ResetPasswordPage() {
     e.preventDefault();
 
     try {
-      const res = await fetch('http://127.0.0.1:5000/forgot-password', {
+      const res = await fetch(`${API_URL}/forgot-password`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         credentials: 'include',
@@ -43,7 +44,7 @@ export default function ResetPasswordPage() {
     e.preventDefault();
 
     try {
-      const res = await fetch('http://127.0.0.1:5000/reset-password', {
+      const res = await fetch(`${API_URL}/reset-password`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         credentials: 'include',

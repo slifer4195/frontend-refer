@@ -2,6 +2,7 @@ import React, { useState, useContext, useEffect } from 'react';
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import '../style/login.css';
 import { AuthContext } from '../components/AuthContext';
+import API_URL from '../config/api';
 
 export default function LoginPage() {
   const [email, setEmail] = useState('');
@@ -18,7 +19,7 @@ export default function LoginPage() {
     
     if (googleSuccess === 'true') {
       // Check if user is logged in
-      fetch('http://127.0.0.1:5000/google/check', {
+      fetch(`${API_URL}/google/check`, {
         method: 'POST',
         credentials: 'include',
       })
@@ -41,7 +42,7 @@ export default function LoginPage() {
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      const res = await fetch('http://127.0.0.1:5000/login', {
+      const res = await fetch(`${API_URL}/login`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         credentials: 'include',
@@ -92,7 +93,7 @@ export default function LoginPage() {
         <button 
           type="button" 
           className="google-signin-btn"
-          onClick={() => window.location.href = 'http://127.0.0.1:5000/google/login?origin=' + encodeURIComponent(window.location.origin)}
+          onClick={() => window.location.href = `${API_URL}/google/login?origin=` + encodeURIComponent(window.location.origin)}
         >
           <svg className="google-icon" viewBox="0 0 24 24" width="20" height="20">
             <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>

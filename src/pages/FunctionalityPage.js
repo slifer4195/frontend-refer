@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useMemo } from 'react';
 import PointsModal from './PointsModal'; // adjust path as needed
 import '../style/functionality.css';
+import API_URL from '../config/api';
 
 export default function ProfilePage() {
   const [user, setUser] = useState(null);
@@ -21,7 +22,7 @@ export default function ProfilePage() {
 
   const fetchUser = async () => {
     try {
-      const res = await fetch('http://127.0.0.1:5000/me', {
+      const res = await fetch(`${API_URL}/me`, {
         credentials: 'include',
       });
       if (!res.ok) throw new Error('Not logged in');
@@ -34,7 +35,7 @@ export default function ProfilePage() {
 
   const fetchCustomers = async () => {
     try {
-      const res = await fetch('http://127.0.0.1:5000/customers', {
+      const res = await fetch(`${API_URL}/customers`, {
         credentials: 'include',
       });
       const data = await res.json();
@@ -42,7 +43,7 @@ export default function ProfilePage() {
       const customersWithPoints = await Promise.all(
         data.map(async (customer) => {
           try {
-            const pointRes = await fetch(`http://127.0.0.1:5000/customer_point/${customer.id}`, {
+            const pointRes = await fetch(`${API_URL}/customer_point/${customer.id}`, {
               credentials: 'include',
             });
             if (!pointRes.ok) throw new Error('Failed to fetch points');
@@ -86,7 +87,7 @@ export default function ProfilePage() {
 
   const fetchMenu = async () => {
     try {
-      const res = await fetch('http://127.0.0.1:5000/list_menu', {
+      const res = await fetch(`${API_URL}/list_menu`, {
         credentials: 'include',
       });
       const data = await res.json();
@@ -109,7 +110,7 @@ export default function ProfilePage() {
 
   const handleRedeemItem = async (item) => {
     try {
-        const res = await fetch(`http://127.0.0.1:5000/deduct_point/${selectedCustomer.id}/${item.id}`, {
+        const res = await fetch(`${API_URL}/deduct_point/${selectedCustomer.id}/${item.id}`, {
         method: 'GET',
         credentials: 'include',
       });
@@ -142,7 +143,7 @@ export default function ProfilePage() {
     setLoading(true);
     
     try {
-      const sessionRes = await fetch('http://127.0.0.1:5000/session', {
+      const sessionRes = await fetch(`${API_URL}/session`, {
         credentials: 'include',
       });
       if (!sessionRes.ok) throw new Error('Failed to fetch session');
@@ -155,7 +156,7 @@ export default function ProfilePage() {
         ? `You earned ${point} points for ${user.company_name}! Your current point total is ${customerPoints + point}.`
         : `You redeemed ${Math.abs(point)} points at ${user.company_name}. Your current point total is ${customerPoints - point}.`;
     
-      const res = await fetch('http://127.0.0.1:5000/send-test-email', {
+      const res = await fetch(`${API_URL}/send-test-email`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         credentials: 'include',

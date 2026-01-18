@@ -1,4 +1,5 @@
 import React, { createContext, useState, useEffect } from 'react';
+import API_URL from '../config/api';
 
 export const AuthContext = createContext();
 
@@ -10,13 +11,13 @@ export function AuthProvider({ children }) {
   useEffect(() => {
     const checkLogin = async () => {
       try {
-        const res = await fetch('http://127.0.0.1:5000/logged', {
+        const res = await fetch(`${API_URL}/logged`, {
           credentials: 'include',
         });
         const data = await res.json();
         if (data.logged_in) {
           setLoggedIn(true);
-          const userRes = await fetch('http://127.0.0.1:5000/me', {
+          const userRes = await fetch(`${API_URL}/me`, {
             credentials: 'include',
           });
           if (userRes.ok) {

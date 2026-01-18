@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import '../style/profile.css';
 import { AuthContext } from '../components/AuthContext';
 import ConfirmationModal from '../components/ConfirmationModal';
+import API_URL from '../config/api';
 
 export default function ProfilePage() {
   const { currentUser, loggedIn, setCurrentUser } = useContext(AuthContext);
@@ -21,7 +22,7 @@ export default function ProfilePage() {
     const fetchUserData = async () => {
       if (loggedIn && !currentUser) {
         try {
-          const res = await fetch('http://127.0.0.1:5000/me', {
+          const res = await fetch(`${API_URL}/me`, {
             credentials: 'include',
           });
           if (res.ok) {
@@ -48,7 +49,7 @@ export default function ProfilePage() {
 
     const fetchCustomers = async () => {
       try {
-        const res = await fetch('http://127.0.0.1:5000/customers', {
+        const res = await fetch(`${API_URL}/customers`, {
           credentials: 'include',
         });
         if (!res.ok) throw new Error('Failed to fetch customers');
@@ -58,7 +59,7 @@ export default function ProfilePage() {
         const customersWithPoints = await Promise.all(
           data.map(async (customer) => {
             try {
-              const pointRes = await fetch(`http://127.0.0.1:5000/customer_point/${customer.id}`, {
+              const pointRes = await fetch(`${API_URL}/customer_point/${customer.id}`, {
                 credentials: 'include',
               });
               if (!pointRes.ok) throw new Error('Failed to fetch points');
@@ -78,7 +79,7 @@ export default function ProfilePage() {
 
     const fetchCustomerCount = async () => {
       try {
-        const res = await fetch('http://127.0.0.1:5000/customer-count', {
+        const res = await fetch(`${API_URL}/customer-count`, {
           credentials: 'include',
         });
         if (!res.ok) throw new Error('Failed to fetch count');
@@ -102,7 +103,7 @@ export default function ProfilePage() {
     if (!email) return;
 
     try {
-      const res = await fetch('http://127.0.0.1:5000/delete-customer', {
+      const res = await fetch(`${API_URL}/delete-customer`, {
         method: 'DELETE',
         headers: { 'Content-Type': 'application/json' },
         credentials: 'include',
@@ -147,7 +148,7 @@ export default function ProfilePage() {
     }
 
     try {
-      const res = await fetch('http://127.0.0.1:5000/edit_company', {
+      const res = await fetch(`${API_URL}/edit_company`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         credentials: 'include',
@@ -177,7 +178,7 @@ export default function ProfilePage() {
     }
 
     try {
-      const res = await fetch('http://127.0.0.1:5000/add-customer', {
+      const res = await fetch(`${API_URL}/add-customer`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -192,7 +193,7 @@ export default function ProfilePage() {
         // Refresh customers list and count
         const fetchCustomers = async () => {
           try {
-            const res = await fetch('http://127.0.0.1:5000/customers', {
+            const res = await fetch(`${API_URL}/customers`, {
               credentials: 'include',
             });
             if (!res.ok) throw new Error('Failed to fetch customers');
@@ -201,7 +202,7 @@ export default function ProfilePage() {
             const customersWithPoints = await Promise.all(
               data.map(async (customer) => {
                 try {
-                  const pointRes = await fetch(`http://127.0.0.1:5000/customer_point/${customer.id}`, {
+                  const pointRes = await fetch(`${API_URL}/customer_point/${customer.id}`, {
                     credentials: 'include',
                   });
                   if (!pointRes.ok) throw new Error('Failed to fetch points');
@@ -221,7 +222,7 @@ export default function ProfilePage() {
 
         const fetchCustomerCount = async () => {
           try {
-            const res = await fetch('http://127.0.0.1:5000/customer-count', {
+            const res = await fetch(`${API_URL}/customer-count`, {
               credentials: 'include',
             });
             if (!res.ok) throw new Error('Failed to fetch count');

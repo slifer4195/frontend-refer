@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../style/test.css';
+import API_URL from '../config/api';
 
 export default function TestPage() {
   const [currentUser, setCurrentUser] = useState(null);
@@ -9,7 +10,7 @@ export default function TestPage() {
 
   const handlePing = async () => {
     try {
-      const res = await fetch('http://127.0.0.1:5000/ping', {
+      const res = await fetch(`${API_URL}/ping`, {
         credentials: 'include',
       });
       const text = await res.text();
@@ -21,7 +22,7 @@ export default function TestPage() {
 
   const handleLogout = async () => {
     try {
-      const res = await fetch('http://127.0.0.1:5000/logout', {
+      const res = await fetch(`${API_URL}/logout`, {
         method: 'POST',
         credentials: 'include',
       });
@@ -36,7 +37,7 @@ export default function TestPage() {
 
   const fetchCurrentUser = async () => {
     try {
-      const res = await fetch('http://127.0.0.1:5000/me', {
+      const res = await fetch(`${API_URL}/me`, {
         credentials: 'include',
       });
       if (!res.ok) throw new Error('Not authenticated');
@@ -57,7 +58,7 @@ export default function TestPage() {
 
   const fetchData = async () => {
     try {
-      const res = await fetch('http://127.0.0.1:5000/user-customer', {
+      const res = await fetch(`${API_URL}/user-customer`, {
         credentials: 'include',
       });
       const json = await res.json();
@@ -71,7 +72,7 @@ export default function TestPage() {
     if (!window.confirm('Are you sure you want to delete this user?')) return;
 
     try {
-      const res = await fetch(`http://127.0.0.1:5000/user_delete/${userId}`, {
+      const res = await fetch(`${API_URL}/user_delete/${userId}`, {
         method: 'DELETE',
         credentials: 'include',
       });
